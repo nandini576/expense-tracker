@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./BudgetSection.css";
+import { MdEdit } from "react-icons/md";
 import { apiFetch } from "../api/apiFetch";
 
 function BudgetSection() {
@@ -8,10 +9,13 @@ function BudgetSection() {
   const [amount, setAmount] = useState("");
   const [budgets, setBudgets] = useState([]);
 
+  const [editingCategory, setEditingCategory] = useState(null);
+
   const month = new Date().getMonth() + 1;
   const year = new Date().getFullYear();
 
   const fetchBudgets = async () => {
+
     const data = await apiFetch(
       `/budget/status?month=${month}&year=${year}`
     );
@@ -41,22 +45,49 @@ function BudgetSection() {
 
     if (!category || !amount) return;
 
-    await apiFetch("/budget", {
-      method: "POST",
-      body: JSON.stringify({
-        category,
-        amount: Number(amount),
-        month,
-        year
-      })
-    });
+    if (editingCategory) {
+
+      await apiFetch("/budget", {
+        method: "PUT",
+        body: JSON.stringify({
+          category,
+          monthlyBudget: Number(amount),
+          month,
+          year
+        })
+      });
+
+    } else {
+
+      await apiFetch("/budget", {
+        method: "POST",
+        body: JSON.stringify({
+          category,
+          monthlyBudget: Number(amount),
+          month,
+          year
+        })
+      });
+
+    }
 
     setCategory("");
     setAmount("");
+    setEditingCategory(null);
 
     await fetchBudgets();
 
     window.dispatchEvent(new Event("refreshDashboard"));
+  };
+
+  const handleEdit = (item) => {
+
+    setEditingCategory(item.category);
+
+    setCategory(item.category);
+
+    setAmount(item.budget);
+
   };
 
   return (
@@ -67,8 +98,6 @@ function BudgetSection() {
         <h3>Budgets</h3>
       </div>
 
-      {/* FORM */}
-
       <form
         className="budget-form"
         onSubmit={handleSubmit}
@@ -77,8 +106,11 @@ function BudgetSection() {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          disabled={editingCategory}
         >
+
           <option value="">Select Category</option>
+
           <option>Food</option>
           <option>Travel</option>
           <option>Shopping</option>
@@ -87,6 +119,7 @@ function BudgetSection() {
           <option>Health</option>
           <option>Education</option>
           <option>Other</option>
+
         </select>
 
         <input
@@ -97,12 +130,16 @@ function BudgetSection() {
         />
 
         <button type="submit">
-          Add Budget
+
+          {
+            editingCategory
+              ? "Update Budget"
+              : "Add Budget"
+          }
+
         </button>
 
       </form>
-
-      {/* TABLE */}
 
       {
         budgets.length === 0 ? (
@@ -122,13 +159,16 @@ function BudgetSection() {
           <table className="budget-table">
 
             <thead>
+
               <tr>
                 <th>Category</th>
                 <th>Budget</th>
                 <th>Spent</th>
                 <th>Remaining</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
+
             </thead>
 
             <tbody>
@@ -136,7 +176,14 @@ function BudgetSection() {
               {
                 budgets.map((item, i) => (
 
-                  <tr key={i}>
+                  <tr
+                    key={i}
+                    className={
+                      editingCategory === item.category
+                        ? "editing-row"
+                        : ""
+                    }
+                  >
 
                     <td>{item.category}</td>
 
@@ -154,12 +201,23 @@ function BudgetSection() {
 
                     <td
                       className={
-                        item.status === "OVER"
+                        item.status === "OVER BUDGET"
                           ? "over"
                           : "ok"
                       }
                     >
                       {item.status}
+                    </td>
+
+                    <td>
+
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEdit(item)}
+                      >
+                        <MdEdit size={20} />
+                      </button>
+
                     </td>
 
                   </tr>

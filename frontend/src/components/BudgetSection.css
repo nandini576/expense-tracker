@@ -5,9 +5,6 @@
   box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
-
-/* HEADER */
-
 .section-header{
   margin-bottom:18px;
 }
@@ -19,13 +16,13 @@
 }
 
 
-/* ================= FORM ================= */
+/* FORM */
 
 .budget-form{
   display:flex;
   flex-direction:column;
   gap:14px;
-  margin-bottom:24px;
+  margin-bottom:25px;
 }
 
 .budget-form input,
@@ -48,26 +45,30 @@
 
 .budget-form button{
   padding:12px;
-  border:none;
-  background:#20477a;
-  color:white;
+  border:1px solid #20477a;
+  background:#eef4fc;
+  color:#20477a;
   border-radius:8px;
   cursor:pointer;
-  font-size:14px;
   font-weight:600;
   transition:0.3s;
 }
 
 .budget-form button:hover{
-  background:#16355c;
+  background:#20477a;
+  color:white;
 }
 
 
-/* ================= TABLE ================= */
+/* TABLE */
 
 .budget-table{
   width:100%;
   border-collapse:collapse;
+}
+
+.budget-table tr{
+  transition:0.3s;
 }
 
 .budget-table th,
@@ -80,25 +81,24 @@
 
 .budget-table th{
   background:#f9fafb;
-  color:#163c7b;
+  color:#374151;
   font-weight:600;
 }
 
 .budget-table td{
-  color:#5b6778;
-  font-weight:500;
+  color:#4b5563;
 }
 
 
 /* STATUS */
 
 .ok{
-  color:#047857;
+  color:green !important;
   font-weight:600;
 }
 
 .over{
-  color:#dc2626;
+  color:#e63946 !important;
   font-weight:600;
 }
 
@@ -106,25 +106,54 @@
 /* EMPTY */
 
 .empty-state{
-  padding:28px;
+  padding:30px;
   text-align:center;
   background:#f9fafb;
   border-radius:10px;
 }
 
 .empty-state p{
-  font-size:15px;
+  font-size:16px;
   color:#1f2937;
-  margin-bottom:6px;
 }
 
 .empty-state span{
   color:#6b7280;
-  font-size:13px;
+  font-size:14px;
 }
 
 
-/* ================= TABLET ================= */
+/* EDIT BUTTON */
+
+.edit-btn{
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  color:#20477a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.3s;
+}
+
+.edit-btn:hover{
+  transform:scale(1.15);
+}
+
+
+/* EDITING ROW */
+
+.editing-row{
+  background:#eef4fc;
+  border-left:5px solid #20477a;
+}
+
+.editing-row td{
+  background:#eef4fc;
+}
+
+
+/* MOBILE */
 
 @media(max-width:768px){
 
@@ -136,11 +165,15 @@
     font-size:17px;
   }
 
+  .budget-form{
+    gap:12px;
+  }
+
   .budget-form input,
   .budget-form select,
   .budget-form button{
+    font-size:13px;
     padding:11px;
-    font-size:13px;
   }
 
   .budget-table th,
@@ -152,87 +185,12 @@
 }
 
 
-/* ================= MOBILE CARD TABLE ================= */
-
-@media(max-width:600px){
-
-  .budget-table,
-  .budget-table thead,
-  .budget-table tbody,
-  .budget-table th,
-  .budget-table td,
-  .budget-table tr{
-    display:block;
-    width:100%;
-  }
-
-  .budget-table thead{
-    display:none;
-  }
-
-  .budget-table tr{
-    background:#f9fafb;
-    border-radius:12px;
-    margin-bottom:16px;
-    padding:10px;
-    border:1px solid #e5e7eb;
-  }
-
-  .budget-table td{
-    border:none;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 6px;
-    font-size:13px;
-  }
-
-  .budget-table td::before{
-    font-weight:600;
-    color:#163c7b;
-  }
-
-  .budget-table td:nth-child(1)::before{
-    content:"Category";
-  }
-
-  .budget-table td:nth-child(2)::before{
-    content:"Budget";
-  }
-
-  .budget-table td:nth-child(3)::before{
-    content:"Spent";
-  }
-
-  .budget-table td:nth-child(4)::before{
-    content:"Remaining";
-  }
-
-  .budget-table td:nth-child(5)::before{
-    content:"Status";
-  }
-
-}
-
-
-/* ================= SMALL MOBILE ================= */
+/* SMALL MOBILE */
 
 @media(max-width:480px){
 
   .section-card{
     padding:15px;
-  }
-
-  .empty-state{
-    padding:22px;
-  }
-
-  .empty-state p{
-    font-size:14px;
-  }
-
-  .empty-state span{
-    font-size:12px;
   }
 
 }
