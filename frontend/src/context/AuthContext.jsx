@@ -1,48 +1,41 @@
-import { createContext, useState, useEffect } from "react";
-
-export const AuthContext = createContext();
+import { useState, useCallback } from "react";
+import { AuthContext } from "./AuthContextStore";
 
 function AuthProvider({ children }) {
 
   const [user, setUser] = useState(() => {
-    return JSON.parse(localStorage.getItem("user")) || null;
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    return JSON.parse(sessionStorage.getItem("user")) || null;
   });
 
-  const [loading, setLoading] = useState(true);
+  const [loading] = useState(false);
 
-  // Initialize loading state
-  useEffect(() => {
-    // Check if user data exists in localStorage
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-    setLoading(false);
-  }, []);
-
-  const login = (data) => {
+  const login = useCallback((data) => {
      if (!data?.token || !data?.user) {
         console.error("Invalid login response", data);
         return;
       }
-    localStorage.setItem("token", data.token);   
+    sessionStorage.setItem("token", data.token);
     const userData = {
       id: data.user.id,
       name: data.user.name ,
       email: data.user.email 
     };
-    localStorage.setItem("user", JSON.stringify(userData));
+    sessionStorage.setItem("user", JSON.stringify(userData));
 
     setUser(userData);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
 
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
     setUser(null);
-  };
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout }}>

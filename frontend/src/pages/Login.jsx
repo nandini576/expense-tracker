@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContextStore";
 import { apiFetch } from "../api/apiFetch";
 
 function Login() {
@@ -14,14 +14,13 @@ function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const { login } = useContext(AuthContext);
+  const { login, logout } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setEmail("");
-    setPassword("");
-  }, []);
+    logout();
+  }, [logout]);
 
   const handleSubmit = async (e) => {
 
@@ -119,6 +118,8 @@ function Login() {
 
               <input
                 type="email"
+                name="login-email"
+                autoComplete="off"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -134,6 +135,8 @@ function Login() {
 
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="login-password"
+                  autoComplete="new-password"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
