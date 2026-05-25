@@ -1,6 +1,6 @@
 import React from "react";
 import "./Dashboard.css";
-import Navbar from "../components/NavBar";
+import NavBar from "../components/NavBar";
 import SummaryCards from "../components/SummaryCards";
 import BudgetSection from "../components/BudgetSection";
 import ExpenseSection from "../components/ExpenseSection";
@@ -10,7 +10,7 @@ import Footer from "../components/Footer";
 function Dashboard() {
   return (
     <div className="dashboard">
-      <Navbar />
+      <NavBar />
 
       <div className="dashboard-container">
         <div className="welcome-row">
