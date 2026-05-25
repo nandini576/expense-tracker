@@ -1,6 +1,6 @@
 import React from "react";
 import "./Dashboard.css";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavBar";
 import SummaryCards from "../components/SummaryCards";
 import BudgetSection from "../components/BudgetSection";
 import ExpenseSection from "../components/ExpenseSection";
