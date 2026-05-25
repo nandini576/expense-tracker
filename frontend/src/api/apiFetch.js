@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://expense-tracker2-x75d.onrender.com";
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = sessionStorage.getItem("token");
