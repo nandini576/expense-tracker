@@ -1,9 +1,13 @@
-const BASE_URL = "https://expense-tracker2-x75d.onrender.com";
+const BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://expense-tracker2-x75d.onrender.com/api"
+).replace(/\/$/, "");
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = sessionStorage.getItem("token");
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
 
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
